@@ -4,7 +4,8 @@ import pymongo
 import os
 
 
-myclient = os.environ.get('MONGO_URI')
+uri = os.environ.get('MONGO_URI')
+myclient = pymongo.MongoClient(uri)
 mydb = myclient["placementScraper"]
 mycol = mydb["linkDB"]
 
