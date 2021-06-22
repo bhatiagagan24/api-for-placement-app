@@ -23,8 +23,8 @@ def updateLists():
     for links in cursor:
         href = links['urLinkId']
         name = links['name']
-        name = name.replace("\\u002e", "")
-        href = href.replace("\\u002e", "")
+        name = name.replace("\\u002e", ".")
+        href = href.replace("\\u002e", ".")
         href = "https://amity.edu/placement/" + href
         returnJson.append({"title": name, "href": href})
     return returnJson
