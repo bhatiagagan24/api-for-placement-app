@@ -1,7 +1,33 @@
 from flask import Flask, jsonify
 import json
+import pymongo
+import os
+
+
+myclient = os.environ.get('MONGO_URI')
+mydb = myclient["placementScraper"]
+mycol = mydb["linkDB"]
+
+
 
 app = Flask(__name__)
+
+
+
+
+
+def updateLists():
+    returnJson = []
+    cursor = mycol.find({})
+    for links in cursor:
+        href = links['urLinkId']
+        name = links['name']
+        name = name.replace("\\u002e", "")
+        href = href.replace("\\u002e", "")
+        href = "https://amity.edu/placement/" + href
+        returnJson.append({"title": name, "href": href})
+    return returnJson
+
 
 
 sampleDict = [
@@ -25,7 +51,8 @@ sampleDict = [
 
 @app.route('/')
 def home():
-    json_object = json.dumps(sampleDict, indent=4)
+    returnJson = updateLists()
+    json_object = json.dumps(returnJson, indent=4)
     return json_object
     
 
