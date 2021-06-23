@@ -6,7 +6,7 @@ import unixTimeStamp
 import os
 
 
-configKey = os.environ.get('MONGO_KEY')
+configKey = os.environ.get('MONGO_URI')
 myclient = pymongo.MongoClient(configKey)
 mydb = myclient["placementScraper"]
 mycol = mydb["linkDB"]

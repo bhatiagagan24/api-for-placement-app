@@ -7,7 +7,7 @@ import pymongo
 from pymongo import cursor
 import os
 
-configKey = os.environ.get('MONGO_KEY')
+configKey = os.environ.get('MONGO_URI')
 myclient = pymongo.MongoClient(configKey)
 mydb = myclient["placementScraper"]
 mycol = mydb["unixTimeStamp"]
@@ -40,7 +40,7 @@ def checkAndUpdateTime():
         id = t['_id']
         
     # if currTime - lastTime >= 100:
-    if currTime - lastTime >= 43200:    
+    if currTime - lastTime >= 21600:    
         try:
             q1 = {'_id': id}
             new_val = {"$set": {"currTime": currTime}}
@@ -52,6 +52,7 @@ def checkAndUpdateTime():
         return 1
     else:
         #  since not half a day passed
+        #  since 1/4th day not passed
         return 0
 
 # if __name__ == '__main__':

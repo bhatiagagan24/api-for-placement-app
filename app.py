@@ -2,7 +2,9 @@ from flask import Flask, jsonify
 import json
 import pymongo
 import os
-
+import scraper
+import unixTimeStamp
+import time
 
 uri = os.environ.get('MONGO_URI')
 myclient = pymongo.MongoClient(uri)
@@ -14,7 +16,7 @@ mycol = mydb["linkDB"]
 app = Flask(__name__)
 
 
-
+url = "https://amity.edu/placement/upcoming-recruitment.asp"
 
 
 def updateLists():
@@ -31,30 +33,20 @@ def updateLists():
 
 
 
-sampleDict = [
-        {
-            "title": "titl1", 
-            "href": "google.com",
-        },
-        {
-            "title": "titl2", 
-            "href": "google.com",
-        },
-        {
-            "title": "titl3", 
-            "href": "google.com",
-        },
-        {
-            "title": "titl4", 
-            "href": "google.com",
-        },
-    ]
-
 @app.route('/')
 def home():
-    returnJson = updateLists()
-    json_object = json.dumps(returnJson, indent=4)
-    return json_object
+    timeCheck = unixTimeStamp.checkAndUpdateTime() 
+    if timeCheck == 0:
+        returnJson = updateLists()
+        json_object = json.dumps(returnJson, indent=4)
+        return json_object
+    else:
+        newScraped = scraper.scraper(url)
+        returnJson = updateLists()
+        json_object = json.dumps(returnJson, indent=4)
+        return json_object
+    return [{"title": "Programming error"}]
+
     
 
 if __name__ == '__main__':
