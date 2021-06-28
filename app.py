@@ -31,7 +31,7 @@ url = "https://amity.edu/placement/upcoming-recruitment.asp"
 #         returnJson.append({"title": name, "href": href})
 #     return returnJson
 
-@app.route('/)
+@app.route('/')
 def home():
     return "App switched off"
 
